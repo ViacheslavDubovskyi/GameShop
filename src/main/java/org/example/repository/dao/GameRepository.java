@@ -8,7 +8,7 @@ public interface GameRepository {
 
     Game save(Game game);
 
-    Game getByID(int id);
+    Game getById(int id);
 
     Game findByName(String name);
 
@@ -16,9 +16,9 @@ public interface GameRepository {
 
     boolean remove(int id);
 
-    List<Game> filterByPrice();
+    List<Game> filterByPrice(double min, double max);
 
-    List<Game> filterByCategory();
+    List<Game> filterByCategory(String category);
 
     List<Game> sortedByAddedDate();
 

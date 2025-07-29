@@ -6,13 +6,14 @@ import org.example.repository.dao.GameRepository;
 import java.util.List;
 
 public class GameRepositoryImpl implements GameRepository {
+
     @Override
     public Game save(Game game) {
         return null;
     }
 
     @Override
-    public Game getByID(int id) {
+    public Game getById(int id) {
         return null;
     }
 
@@ -32,12 +33,12 @@ public class GameRepositoryImpl implements GameRepository {
     }
 
     @Override
-    public List<Game> filterByPrice() {
+    public List<Game> filterByPrice(double min, double max) {
         return List.of();
     }
 
     @Override
-    public List<Game> filterByCategory() {
+    public List<Game> filterByCategory(String category) {
         return List.of();
     }
 
