@@ -16,7 +16,7 @@ public interface GameRepository {
 
     boolean remove(int id);
 
-    List<Game> filterByPrice(double min, double max);
+    List<Game> filterByPrice(double max);
 
     List<Game> filterByGenre(String genre);
 

@@ -33,7 +33,7 @@ public class GameRepositoryImpl implements GameRepository {
     }
 
     @Override
-    public List<Game> filterByPrice(double min, double max) {
+    public List<Game> filterByPrice(double max) {
         return List.of();
     }
 
