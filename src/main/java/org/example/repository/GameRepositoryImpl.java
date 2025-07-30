@@ -18,7 +18,7 @@ public class GameRepositoryImpl implements GameRepository {
     }
 
     @Override
-    public Game findByName(String name) {
+    public Game findByTitle(String title) {
         return null;
     }
 
@@ -38,7 +38,7 @@ public class GameRepositoryImpl implements GameRepository {
     }
 
     @Override
-    public List<Game> filterByCategory(String category) {
+    public List<Game> filterByGenre(String genre) {
         return List.of();
     }
 

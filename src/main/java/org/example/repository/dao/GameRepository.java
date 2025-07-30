@@ -10,7 +10,7 @@ public interface GameRepository {
 
     Game getById(int id);
 
-    Game findByName(String name);
+    Game findByTitle(String title);
 
     int update(Game game);
 
@@ -18,7 +18,7 @@ public interface GameRepository {
 
     List<Game> filterByPrice(double min, double max);
 
-    List<Game> filterByCategory(String category);
+    List<Game> filterByGenre(String genre);
 
     List<Game> sortedByAddedDate();
 
