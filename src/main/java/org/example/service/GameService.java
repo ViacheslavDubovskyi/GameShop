@@ -1,16 +1,16 @@
 package org.example.service;
 
 import org.example.model.Game;
-import org.example.repository.GameRepositoryImpl;
+import org.example.repository.dao.GameRepository;
 
 import java.util.List;
 import java.util.Optional;
 
 public class GameService {
 
-    private final GameRepositoryImpl gameRepository;
+    private final GameRepository gameRepository;
 
-    public GameService(GameRepositoryImpl gameRepository) {
+    public GameService(GameRepository gameRepository) {
         this.gameRepository = gameRepository;
     }
 
