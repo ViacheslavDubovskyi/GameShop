@@ -13,7 +13,7 @@ public class Game {
     private String title;
     private String genre;
     private double price;
-    private int rating;
+    private double rating;
     private String description;
     private LocalDate releaseDate;
     private LocalDate addedDate;
