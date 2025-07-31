@@ -5,6 +5,7 @@ import org.example.model.Game;
 import org.example.repository.dao.GameRepository;
 
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.List;
 
 public class GameRepositoryImpl implements GameRepository {
@@ -39,7 +40,11 @@ public class GameRepositoryImpl implements GameRepository {
 
             ps.setInt(1, id);
             try (ResultSet resultSet = ps.executeQuery()) {
-                return getGame(resultSet);
+                if (resultSet.next()) {
+                    return getGame(resultSet);
+                } else {
+                    return null;
+                }
             }
 
         } catch (SQLException e) {
@@ -47,23 +52,6 @@ public class GameRepositoryImpl implements GameRepository {
             throw new RuntimeException(e);
         }
     }
-
-    @Override
-    public Game findByTitle(String title) {
-        try (Connection conn = ConnectionPool.getConnection();
-             PreparedStatement ps = conn.prepareStatement(SQLQueries.FIND_BY_TITLE.get())) {
-
-            ps.setString(1, title);
-            try (ResultSet resultSet = ps.executeQuery()) {
-                return getGame(resultSet);
-            }
-
-        } catch (SQLException e) {
-            System.err.println(e.getMessage());
-            throw new RuntimeException(e);
-        }
-    }
-
 
     @Override
     public int update(Game game) {
@@ -81,6 +69,113 @@ public class GameRepositoryImpl implements GameRepository {
         }
     }
 
+    @Override
+    public int remove(int id) {
+        try (Connection conn = ConnectionPool.getConnection();
+             PreparedStatement ps = conn.prepareStatement(SQLQueries.REMOVE_BY_ID.get())) {
+
+            ps.setInt(1, id);
+            return ps.executeUpdate();
+        } catch (SQLException e) {
+            System.err.println(e.getMessage());
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public List<Game> findByTitle(String title) {
+        try (Connection conn = ConnectionPool.getConnection();
+             PreparedStatement ps = conn.prepareStatement(SQLQueries.FIND_BY_TITLE.get())) {
+
+            ps.setString(1, "%" + title + "%");
+            try (ResultSet rs = ps.executeQuery()) {
+                return mapGames(rs);
+            }
+
+        } catch (SQLException e) {
+            System.err.println(e.getMessage());
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public List<Game> filterByPrice(double max) {
+        try (Connection conn = ConnectionPool.getConnection();
+             PreparedStatement ps = conn.prepareStatement(SQLQueries.FILTER_BY_PRICE.get())) {
+
+            ps.setDouble(1, max);
+            try (ResultSet rs = ps.executeQuery()) {
+                return mapGames(rs);
+            }
+
+        } catch (SQLException e) {
+            System.err.println(e.getMessage());
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public List<Game> filterByGenre(String genre) {
+        try (Connection conn = ConnectionPool.getConnection();
+             PreparedStatement ps = conn.prepareStatement(SQLQueries.FIND_BY_GENRE.get())) {
+
+            ps.setString(1, genre);
+            try (ResultSet rs = ps.executeQuery()) {
+                return mapGames(rs);
+            }
+
+        } catch (SQLException e) {
+            System.err.println(e.getMessage());
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public List<Game> filterByRating(double rating) {
+        try (Connection conn = ConnectionPool.getConnection();
+             PreparedStatement ps = conn.prepareStatement(SQLQueries.FILTER_BY_RATING.get())) {
+
+            ps.setDouble(1, rating);
+            try (ResultSet rs = ps.executeQuery()) {
+                return mapGames(rs);
+            }
+
+        } catch (SQLException e) {
+            System.err.println(e.getMessage());
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public List<Game> sortedByAddedDate() {
+        try (Connection conn = ConnectionPool.getConnection();
+             PreparedStatement ps = conn.prepareStatement(SQLQueries.SORTED_BY_DATE.get())) {
+
+            try (ResultSet rs = ps.executeQuery()) {
+                return mapGames(rs);
+            }
+
+        } catch (SQLException e) {
+            System.err.println(e.getMessage());
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public List<Game> findAll() {
+        try (Connection conn = ConnectionPool.getConnection();
+             PreparedStatement ps = conn.prepareStatement(SQLQueries.FIND_ALL.get())) {
+
+            try (ResultSet rs = ps.executeQuery()) {
+                return mapGames(rs);
+            }
+
+        } catch (SQLException e) {
+            System.err.println(e.getMessage());
+            throw new RuntimeException(e);
+        }
+    }
+
     private void setGame(Game game, PreparedStatement ps) throws SQLException {
         ps.setString(1, game.getTitle());
         ps.setString(2, game.getGenre());
@@ -91,52 +186,23 @@ public class GameRepositoryImpl implements GameRepository {
     }
 
     private Game getGame(ResultSet resultSet) throws SQLException {
-        if (resultSet.next()) {
-            return Game.builder()
-                    .title(resultSet.getString("title"))
-                    .genre(resultSet.getString("genre"))
-                    .price(resultSet.getDouble("price"))
-                    .rating(resultSet.getDouble("rating"))
-                    .description(resultSet.getString("description"))
-                    .releaseDate(resultSet.getDate("release_date").toLocalDate())
-                    .addedDate(resultSet.getDate("added_date").toLocalDate())
-                    .id(resultSet.getInt("id"))
-                    .build();
-        } else {
-            return null;
+        return Game.builder()
+                .title(resultSet.getString("title"))
+                .genre(resultSet.getString("genre"))
+                .price(resultSet.getDouble("price"))
+                .rating(resultSet.getDouble("rating"))
+                .description(resultSet.getString("description"))
+                .releaseDate(resultSet.getDate("release_date").toLocalDate())
+                .addedDate(resultSet.getDate("added_date").toLocalDate())
+                .id(resultSet.getInt("id"))
+                .build();
+    }
+
+    private List<Game> mapGames(ResultSet rs) throws SQLException {
+        List<Game> games = new ArrayList<>();
+        while (rs.next()) {
+            games.add(getGame(rs));
         }
-    }
-
-    @Override
-    public boolean remove(int id) {
-        try (Connection conn = ConnectionPool.getConnection();
-             PreparedStatement ps = conn.prepareStatement(SQLQueries.REMOVE_BY_ID.get())) {
-
-            ps.setInt(1, id);
-            return ps.execute();
-        } catch (SQLException e) {
-            System.err.println(e.getMessage());
-            throw new RuntimeException(e);
-        }
-    }
-
-    @Override
-    public List<Game> filterByPrice(double max) {
-        return List.of();
-    }
-
-    @Override
-    public List<Game> filterByGenre(String genre) {
-        return List.of();
-    }
-
-    @Override
-    public List<Game> sortedByAddedDate() {
-        return List.of();
-    }
-
-    @Override
-    public List<Game> findAll() {
-        return List.of();
+        return games;
     }
 }

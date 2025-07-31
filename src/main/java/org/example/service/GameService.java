@@ -3,6 +3,7 @@ package org.example.service;
 import org.example.model.Game;
 import org.example.repository.GameRepositoryImpl;
 
+import java.util.List;
 import java.util.Optional;
 
 public class GameService {
@@ -25,17 +26,35 @@ public class GameService {
                 .orElseThrow(() -> new IllegalStateException("No game exists with id: " + id));
     }
 
-    public Game findByTitle(String title) {
-        Game game = gameRepository.findByTitle(title);
-        return Optional.ofNullable(game)
-                .orElseThrow(() -> new IllegalStateException("No game exists with title: " + title));
+    public List<Game> findByTitle(String title) {
+        return gameRepository.findByTitle(title);
     }
 
     public int update(Game game) {
         return gameRepository.update(game);
     }
 
-    public boolean deleteById(int id) {
+    public int deleteById(int id) {
         return gameRepository.remove(id);
+    }
+
+    public List<Game> findAll() {
+        return gameRepository.findAll();
+    }
+
+    public List<Game> filterByGenre(String genre) {
+        return gameRepository.filterByGenre(genre);
+    }
+
+    public List<Game> sortedByAddedDate() {
+        return gameRepository.sortedByAddedDate();
+    }
+
+    public List<Game> filterByPrice(double price) {
+        return gameRepository.filterByPrice(price);
+    }
+
+    public List<Game> filterByRating(double rating) {
+        return gameRepository.filterByRating(rating);
     }
 }

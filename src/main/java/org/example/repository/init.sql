@@ -5,7 +5,7 @@ CREATE TABLE IF NOT EXISTS games
     genre        VARCHAR(255)     NOT NULL,
     price        double precision NOT NULL,
     rating       double precision,
-    description  VARCHAR(255),
-    release_date DATE,
-    added_date   DATE DEFAULT CURRENT_DATE
+    description  TEXT,
+    release_date DATE NOT NULL,
+    added_date   DATE DEFAULT CURRENT_DATE NOT NULL
 );

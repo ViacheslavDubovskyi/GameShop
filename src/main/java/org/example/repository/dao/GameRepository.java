@@ -10,15 +10,17 @@ public interface GameRepository {
 
     Game getById(int id);
 
-    Game findByTitle(String title);
-
     int update(Game game);
 
-    boolean remove(int id);
+    int remove(int id);
+
+    List<Game> findByTitle(String title);
 
     List<Game> filterByPrice(double max);
 
     List<Game> filterByGenre(String genre);
+
+    List<Game> filterByRating(double max);
 
     List<Game> sortedByAddedDate();
 
