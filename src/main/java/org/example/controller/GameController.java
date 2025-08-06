@@ -68,15 +68,12 @@ public class GameController {
                 try {
                     String currentValue = isUpdate ? getCurrentFieldValue(existing, field) : null;
                     System.out.println(field.get() + (currentValue != null ? " [current: " + currentValue + "]" : "") + ":");
-                    String userInput = scanner.nextLine().trim();
 
+                    String userInput = scanner.nextLine().trim();
                     if (isUpdate && userInput.isEmpty()) {
                         break;
                     }
-                    if (!isUpdate && userInput.isEmpty()) {
-                        System.out.println("This field is required, please enter a value.");
-                        continue;
-                    }
+
                     switch (field) {
                         case TITLE -> gameBuilder.title(GameValidator.parseNonEmpty(userInput));
                         case GENRE -> gameBuilder.genre(GameValidator.parseNonEmpty(userInput));
