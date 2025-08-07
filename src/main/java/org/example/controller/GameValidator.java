@@ -11,6 +11,12 @@ public class GameValidator {
         return value;
     }
 
+    public static int parsePositiveInt(String input) throws IllegalArgumentException {
+        int value = Integer.parseInt(input);
+        if (value < 0) throw new IllegalArgumentException("Value must be positive integer.");
+        return value;
+    }
+
     public static LocalDate parseDate(String input) throws DateTimeParseException {
         return LocalDate.parse(input);
     }

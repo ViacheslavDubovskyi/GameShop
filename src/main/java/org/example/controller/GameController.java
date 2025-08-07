@@ -31,32 +31,31 @@ public class GameController {
         };
     }
 
-    public Runnable updateGame(int id) {
+    public Runnable updateGame() {
         return () -> {
-            try {
-                Game existing = gameService.findById(id);
-                if (existing == null) {
-                    System.out.println("Game not found!");
-                    return;
+            while (true) {
+                try {
+                    System.out.println(GameCard.ID.get());
+                    String userId = scanner.next();
+                    if (userExit(userId)) return;
+
+                    int id = GameValidator.parsePositiveInt((userId));
+                    Game existing = gameService.findById(id);
+                    if (existing == null) {
+                        System.out.println("Game not found! Please try another ID or type 'exit' to cancel.");
+                        continue;
+                    }
+                    Game.GameBuilder builder = getBuilder(existing);
+                    fillGameFields(builder, existing);
+                    Game updatedGame = builder.build();
+
+                    int result = gameService.update(updatedGame);
+                    System.out.println("Game has been updated! Number of rows affected: " + result);
+                } catch (IllegalArgumentException e) {
+                    System.err.println(e.getMessage());
+                } catch (Exception e) {
+                    System.err.println("An error occurred while updating the game: " + e.getMessage());
                 }
-
-                Game.GameBuilder builder = Game.builder()
-                        .title(existing.getTitle())
-                        .genre(existing.getGenre())
-                        .price(existing.getPrice())
-                        .rating(existing.getRating())
-                        .description(existing.getDescription())
-                        .releaseDate(existing.getReleaseDate())
-                        .addedDate(existing.getAddedDate())
-                        .id(existing.getId());
-
-                fillGameFields(builder, existing);
-                Game updatedGame = builder.build();
-
-                int result = gameService.update(updatedGame);
-                System.out.println("Game has been updated! Number of rows affected: " + result);
-            } catch (Exception e) {
-                System.err.println(e.getMessage());
             }
         };
     }
@@ -68,8 +67,9 @@ public class GameController {
                 try {
                     String currentValue = isUpdate ? getCurrentFieldValue(existing, field) : null;
                     System.out.println(field.get() + (currentValue != null ? " [current: " + currentValue + "]" : "") + ":");
-
                     String userInput = scanner.nextLine().trim();
+
+                    if (userExit(userInput)) return;
                     if (isUpdate && userInput.isEmpty()) {
                         break;
                     }
@@ -96,7 +96,6 @@ public class GameController {
 
     private String getCurrentFieldValue(Game game, GameCard field) {
         if (game == null) return null;
-
         return switch (field) {
             case ID -> String.valueOf(game.getId());
             case TITLE -> game.getTitle();
@@ -107,5 +106,25 @@ public class GameController {
             case RELEASE_DATE -> game.getReleaseDate() != null ? game.getReleaseDate().toString() : null;
             case ADDED_DATE -> game.getAddedDate() != null ? game.getAddedDate().toString() : null;
         };
+    }
+
+    private Game.GameBuilder getBuilder(Game existing) {
+        return Game.builder()
+                .title(existing.getTitle())
+                .genre(existing.getGenre())
+                .price(existing.getPrice())
+                .rating(existing.getRating())
+                .description(existing.getDescription())
+                .releaseDate(existing.getReleaseDate())
+                .addedDate(existing.getAddedDate())
+                .id(existing.getId());
+    }
+
+    private boolean userExit(String userInput) {
+        if (userInput.equalsIgnoreCase("exit")) {
+            System.out.println("Operation is cancelled.");
+            return true;
+        }
+        return false;
     }
 }
