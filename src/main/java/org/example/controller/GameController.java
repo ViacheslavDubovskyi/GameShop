@@ -41,17 +41,13 @@ public class GameController {
 
                     int id = GameValidator.parsePositiveInt((userId));
                     Game existing = gameService.findById(id);
-                    if (existing == null) {
-                        System.out.println("Game not found! Please try another ID or type 'exit' to cancel.");
-                        continue;
-                    }
                     Game.GameBuilder builder = getBuilder(existing);
                     fillGameFields(builder, existing);
                     Game updatedGame = builder.build();
 
                     int result = gameService.update(updatedGame);
                     System.out.println("Game has been updated! Number of rows affected: " + result);
-                } catch (IllegalArgumentException e) {
+                } catch (IllegalArgumentException | IllegalStateException e) {
                     System.err.println(e.getMessage());
                 } catch (Exception e) {
                     System.err.println("An error occurred while updating the game: " + e.getMessage());
