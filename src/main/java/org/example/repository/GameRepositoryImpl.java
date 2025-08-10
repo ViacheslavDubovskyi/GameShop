@@ -10,10 +10,16 @@ import java.util.List;
 
 public class GameRepositoryImpl implements GameRepository {
 
+    private final ConnectionPool connectionPool;
+
+    public GameRepositoryImpl(ConnectionPool connectionPool) {
+        this.connectionPool = connectionPool;
+    }
+
     @Override
     public Game save(Game game) {
         Game savedGame = null;
-        try (Connection conn = ConnectionPool.getConnection();
+        try (Connection conn = connectionPool.getConnection();
              PreparedStatement ps = conn.prepareStatement(SQLQueries.ADD.get(),
                      PreparedStatement.RETURN_GENERATED_KEYS)) {
 
@@ -35,7 +41,7 @@ public class GameRepositoryImpl implements GameRepository {
 
     @Override
     public Game getById(int id) {
-        try (Connection conn = ConnectionPool.getConnection();
+        try (Connection conn = connectionPool.getConnection();
              PreparedStatement ps = conn.prepareStatement(SQLQueries.FIND_BY_ID.get())) {
 
             ps.setInt(1, id);
@@ -55,7 +61,7 @@ public class GameRepositoryImpl implements GameRepository {
 
     @Override
     public int update(Game game) {
-        try (Connection conn = ConnectionPool.getConnection();
+        try (Connection conn = connectionPool.getConnection();
              PreparedStatement ps = conn.prepareStatement(SQLQueries.UPDATE.get())) {
 
             setGame(game, ps);
@@ -71,7 +77,7 @@ public class GameRepositoryImpl implements GameRepository {
 
     @Override
     public int remove(int id) {
-        try (Connection conn = ConnectionPool.getConnection();
+        try (Connection conn = connectionPool.getConnection();
              PreparedStatement ps = conn.prepareStatement(SQLQueries.REMOVE_BY_ID.get())) {
 
             ps.setInt(1, id);
@@ -84,7 +90,7 @@ public class GameRepositoryImpl implements GameRepository {
 
     @Override
     public List<Game> findByTitle(String title) {
-        try (Connection conn = ConnectionPool.getConnection();
+        try (Connection conn = connectionPool.getConnection();
              PreparedStatement ps = conn.prepareStatement(SQLQueries.FIND_BY_TITLE.get())) {
 
             ps.setString(1, "%" + title + "%");
@@ -100,7 +106,7 @@ public class GameRepositoryImpl implements GameRepository {
 
     @Override
     public List<Game> filterByPrice(double max) {
-        try (Connection conn = ConnectionPool.getConnection();
+        try (Connection conn = connectionPool.getConnection();
              PreparedStatement ps = conn.prepareStatement(SQLQueries.FILTER_BY_PRICE.get())) {
 
             ps.setDouble(1, max);
@@ -116,7 +122,7 @@ public class GameRepositoryImpl implements GameRepository {
 
     @Override
     public List<Game> filterByGenre(String genre) {
-        try (Connection conn = ConnectionPool.getConnection();
+        try (Connection conn = connectionPool.getConnection();
              PreparedStatement ps = conn.prepareStatement(SQLQueries.FIND_BY_GENRE.get())) {
 
             ps.setString(1, genre);
@@ -132,7 +138,7 @@ public class GameRepositoryImpl implements GameRepository {
 
     @Override
     public List<Game> filterByRating(double rating) {
-        try (Connection conn = ConnectionPool.getConnection();
+        try (Connection conn = connectionPool.getConnection();
              PreparedStatement ps = conn.prepareStatement(SQLQueries.FILTER_BY_RATING.get())) {
 
             ps.setDouble(1, rating);
@@ -148,7 +154,7 @@ public class GameRepositoryImpl implements GameRepository {
 
     @Override
     public List<Game> sortedByAddedDate() {
-        try (Connection conn = ConnectionPool.getConnection();
+        try (Connection conn = connectionPool.getConnection();
              PreparedStatement ps = conn.prepareStatement(SQLQueries.SORTED_BY_DATE.get())) {
 
             try (ResultSet rs = ps.executeQuery()) {
@@ -163,7 +169,7 @@ public class GameRepositoryImpl implements GameRepository {
 
     @Override
     public List<Game> findAll() {
-        try (Connection conn = ConnectionPool.getConnection();
+        try (Connection conn = connectionPool.getConnection();
              PreparedStatement ps = conn.prepareStatement(SQLQueries.FIND_ALL.get())) {
 
             try (ResultSet rs = ps.executeQuery()) {
