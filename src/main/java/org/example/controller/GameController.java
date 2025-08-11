@@ -1,5 +1,6 @@
 package org.example.controller;
 
+import org.example.AppMessages;
 import org.example.model.Game;
 import org.example.service.GameService;
 
@@ -24,7 +25,7 @@ public class GameController {
                 Game newGame = builder.build();
                 Game saved = gameService.save(newGame);
 
-                System.out.println("Game has been saved!");
+                System.out.println(AppMessages.SAVED_SUCCESS.get());
                 System.out.println(saved);
             } catch (Exception e) {
                 System.err.println(e.getMessage());
@@ -47,11 +48,11 @@ public class GameController {
                     Game updatedGame = builder.build();
 
                     int result = gameService.update(updatedGame);
-                    System.out.println("Game has been updated! Number of rows affected: " + result);
+                    System.out.println(AppMessages.UPDATED_SUCCESS.get() + result);
                 } catch (IllegalArgumentException | IllegalStateException e) {
                     System.err.println(e.getMessage());
                 } catch (Exception e) {
-                    System.err.println("An error occurred while updating the game: " + e.getMessage());
+                    System.err.println(AppMessages.UPDATED_ERROR.get() + e.getMessage());
                 }
             }
         };
@@ -65,9 +66,9 @@ public class GameController {
             int status = gameService.deleteById(id);
 
             if (status > 0) {
-                System.out.println("Game with ID " + userId + " has been deleted! Status: " + status);
+                System.out.println(AppMessages.DELETED.get() + status);
             } else {
-                System.out.println("No game found with ID " + userId + ".");
+                System.out.println(AppMessages.FOUND_BY_ID_ERROR.get() + userId);
             }
         };
     }
@@ -79,7 +80,7 @@ public class GameController {
             String title = GameValidator.parseNonEmpty(userTitle);
             List<Game> games = gameService.findByTitle(title);
 
-            System.out.println("Games with title " + title + ":");
+            System.out.println(AppMessages.FOUND_BY_TITLE.get() + title);
             games.forEach(System.out::println);
         };
     }
@@ -90,14 +91,16 @@ public class GameController {
             String userId = scanner.next();
             int id = GameValidator.parsePositiveInt((userId));
             Game game = gameService.findById(id);
-            System.out.println("Game with ID " + userId + ": " + game);
+
+            System.out.println(AppMessages.FOUND_BY_ID.get() + userId);
+            System.out.println(game);
         };
     }
 
     public Runnable getAll() {
         return () -> {
             List<Game> games = gameService.findAll();
-            System.out.println("List of all games:");
+            System.out.println(AppMessages.GET_ALL.get());
             games.forEach(System.out::println);
         };
     }
@@ -109,7 +112,7 @@ public class GameController {
             String genre = GameValidator.parseNonEmpty(userGenre);
             List<Game> games = gameService.filterByGenre(genre);
 
-            System.out.println("List of all games by genre " + genre + ":");
+            System.out.println(AppMessages.GET_BY_GENRE.get() + genre);
             games.forEach(System.out::println);
         };
     }
@@ -121,7 +124,7 @@ public class GameController {
             double price = GameValidator.parsePositiveDouble(userPrice);
             List<Game> games = gameService.filterByPrice(price);
 
-            System.out.println("List of all games with price lower than" + price + ":");
+            System.out.println(AppMessages.GET_BY_PRICE.get() + price);
             games.forEach(System.out::println);
         };
     }
@@ -133,16 +136,15 @@ public class GameController {
             double rating = GameValidator.parsePositiveDouble(userRating);
             List<Game> games = gameService.filterByRating(rating);
 
-            System.out.println("List of all games with rating higher than" + rating + ":");
+            System.out.println(AppMessages.GET_BY_RATING.get() + rating);
             games.forEach(System.out::println);
-
         };
     }
 
     public Runnable sortedByAdding() {
         return () -> {
             List<Game> games = gameService.sortedByAddedDate();
-            System.out.println("List of all games sorted by adding date:");
+            System.out.println(AppMessages.SORTED_BY_DATE.get());
             games.forEach(System.out::println);
         };
     }
@@ -174,7 +176,7 @@ public class GameController {
                         case RELEASE_DATE -> gameBuilder.releaseDate(GameValidator.parseDate(userInput));
                     }
                 } catch (Exception e) {
-                    System.out.println("Wrong input: " + e.getMessage());
+                    System.out.println(AppMessages.INVALID_INPUT.get() + e.getMessage());
                 }
             }
         }

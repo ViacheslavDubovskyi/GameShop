@@ -1,5 +1,6 @@
 package org.example.service;
 
+import org.example.AppMessages;
 import org.example.model.Game;
 import org.example.repository.dao.GameRepository;
 
@@ -17,13 +18,13 @@ public class GameService {
     public Game save(Game game) {
         Game savedGame = gameRepository.save(game);
         return Optional.ofNullable(savedGame)
-                .orElseThrow(() -> new IllegalStateException("Failed to save the game " + game.getTitle()));
+                .orElseThrow(() -> new IllegalStateException(AppMessages.SAVED_ERROR.get() + game.getTitle()));
     }
 
     public Game findById(int id) {
         Game game = gameRepository.getById(id);
         return Optional.ofNullable(game)
-                .orElseThrow(() -> new IllegalStateException("No game exists with id: " + id));
+                .orElseThrow(() -> new IllegalStateException(AppMessages.FOUND_BY_ID_ERROR.get() + id));
     }
 
     public List<Game> findByTitle(String title) {
