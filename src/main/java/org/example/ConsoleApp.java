@@ -35,6 +35,7 @@ public class ConsoleApp {
                     .run();
 
         } while (!userCommand.equals("exit"));
+        System.out.println(AppMessages.FAREWELL.get());
 
         scanner.close();
         pool.shutdown();

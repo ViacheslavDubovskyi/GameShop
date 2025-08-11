@@ -3,7 +3,7 @@ package org.example;
 public enum AppMessages {
 
     MENU("""
-            Hello! Choose option with typing number from the list:
+            Hello! Choose option with typing command from the list:
             1 - Add new game.
             2 - Search game by ID.
             3 - Update existing game.
@@ -13,7 +13,8 @@ public enum AppMessages {
             7 - Get games by genre.
             8 - Filter games by MAX price.
             9 - Filter games by MIN rating.
-            10 - Sorted games by added date.
+            10 - Sort games by added date.
+            exit - Exit from the app.
             """),
 
     INVALID_INPUT("Invalid input!"),
@@ -31,7 +32,8 @@ public enum AppMessages {
     GET_BY_PRICE("List of all games with price lower than "),
     GET_BY_RATING("List of all games with rating higher than "),
     SORTED_BY_DATE("List of all games sorted by adding date:"),
-    CANCELED("Operation is cancelled.");
+    CANCELED("Operation is cancelled."),
+    FAREWELL("Thank you for using the app, bye!");
 
     private final String command;
 
