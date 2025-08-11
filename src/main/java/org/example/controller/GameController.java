@@ -3,6 +3,7 @@ package org.example.controller;
 import org.example.model.Game;
 import org.example.service.GameService;
 
+import java.util.List;
 import java.util.Scanner;
 
 public class GameController {
@@ -56,6 +57,96 @@ public class GameController {
         };
     }
 
+    public Runnable deleteGame() {
+        return () -> {
+            System.out.println(GameCard.ID.get());
+            String userId = scanner.next();
+            int id = GameValidator.parsePositiveInt((userId));
+            int status = gameService.deleteById(id);
+
+            if (status > 0) {
+                System.out.println("Game with ID " + userId + " has been deleted! Status: " + status);
+            } else {
+                System.out.println("No game found with ID " + userId + ".");
+            }
+        };
+    }
+
+    public Runnable getByTitle() {
+        return () -> {
+            System.out.println(GameCard.TITLE.get());
+            String userTitle = scanner.next();
+            String title = GameValidator.parseNonEmpty(userTitle);
+            List<Game> games = gameService.findByTitle(title);
+
+            System.out.println("Games with title " + title + ":");
+            games.forEach(System.out::println);
+        };
+    }
+
+    public Runnable getById() {
+        return () -> {
+            System.out.println(GameCard.ID.get());
+            String userId = scanner.next();
+            int id = GameValidator.parsePositiveInt((userId));
+            Game game = gameService.findById(id);
+            System.out.println("Game with ID " + userId + ": " + game);
+        };
+    }
+
+    public Runnable getAll() {
+        return () -> {
+            List<Game> games = gameService.findAll();
+            System.out.println("List of all games:");
+            games.forEach(System.out::println);
+        };
+    }
+
+    public Runnable filterByGenre() {
+        return () -> {
+            System.out.println(GameCard.GENRE.get());
+            String userGenre = scanner.next();
+            String genre = GameValidator.parseNonEmpty(userGenre);
+            List<Game> games = gameService.filterByGenre(genre);
+
+            System.out.println("List of all games by genre " + genre + ":");
+            games.forEach(System.out::println);
+        };
+    }
+
+    public Runnable filterByPrice() {
+        return () -> {
+            System.out.println(GameCard.PRICE.get());
+            String userPrice = scanner.next();
+            double price = GameValidator.parsePositiveDouble(userPrice);
+            List<Game> games = gameService.filterByPrice(price);
+
+            System.out.println("List of all games with price lower than" + price + ":");
+            games.forEach(System.out::println);
+        };
+    }
+
+    public Runnable filterByRating() {
+        return () -> {
+            System.out.println(GameCard.RATING.get());
+            String userRating = scanner.next();
+            double rating = GameValidator.parsePositiveDouble(userRating);
+            List<Game> games = gameService.filterByRating(rating);
+
+            System.out.println("List of all games with rating higher than" + rating + ":");
+            games.forEach(System.out::println);
+
+        };
+    }
+
+    public Runnable sortedByAdding() {
+        return () -> {
+            List<Game> games = gameService.sortedByAddedDate();
+            System.out.println("List of all games sorted by adding date:");
+            games.forEach(System.out::println);
+        };
+    }
+
     private void fillGameFields(Game.GameBuilder gameBuilder, Game existing) {
         boolean isUpdate = existing != null;
         for (GameCard field : GameCard.values()) {
@@ -82,7 +173,6 @@ public class GameController {
                         case DESCRIPTION -> gameBuilder.description(userInput);
                         case RELEASE_DATE -> gameBuilder.releaseDate(GameValidator.parseDate(userInput));
                     }
-                    break;
                 } catch (Exception e) {
                     System.out.println("Wrong input: " + e.getMessage());
                 }
