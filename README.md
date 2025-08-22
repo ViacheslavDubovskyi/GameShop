@@ -56,7 +56,7 @@ Create a database, for example:
 CREATE DATABASE gameshop;
 ```
 
-The application uses the following default connection settings (defined in code):
+Run the init.sql file. The application uses the following default connection settings (defined in code):
 
 **URL**: jdbc:postgresql://localhost:5432/gameshop
 
