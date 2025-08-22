@@ -51,12 +51,11 @@ mvn exec:java -Dexec.mainClass="org.example.Main"
 
 Make sure PostgreSQL is installed and running.
 
-Create a database, for example:
+Create a database, for example, run the file:
 ```
-CREATE DATABASE gameshop;
+init.sql
 ```
-
-Run the init.sql file. The application uses the following default connection settings (defined in code):
+The application uses the following default connection settings (defined in code):
 
 **URL**: jdbc:postgresql://localhost:5432/gameshop
 
