@@ -25,6 +25,7 @@ The project follows a Repository-Service-Console architecture, ensuring a clean 
 🛠️ **Technologies**
 
 * Language: Java 21
+* Build Tool: Maven
 * Database: PostgreSQL
 * Connection Pooling: HikariCP
 * JDBC: For database interactions
