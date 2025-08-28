@@ -1,10 +1,11 @@
 package org.example;
 
-import org.example.config.ConnectionPool;
+import org.example.config.SessionFactoryImpl;
 import org.example.controller.GameController;
 import org.example.repository.GameRepositoryImpl;
 import org.example.repository.dao.GameRepository;
 import org.example.service.GameService;
+import org.hibernate.SessionFactory;
 
 import java.util.Map;
 import java.util.Scanner;
@@ -14,12 +15,9 @@ import static java.util.Map.entry;
 public class ConsoleApp {
 
     public static void start() {
-        ConnectionPool pool = new ConnectionPool(
-                "jdbc:postgresql://localhost:5432/gameshop",
-                "postgres",
-                "postgres");
+        SessionFactory factory = SessionFactoryImpl.getSessionFactory();
 
-        GameRepository repository = new GameRepositoryImpl(pool);
+        GameRepository repository = new GameRepositoryImpl(factory);
         GameService service = new GameService(repository);
         Scanner scanner = new Scanner(System.in);
         GameController controller = new GameController(service, scanner);
@@ -29,7 +27,7 @@ public class ConsoleApp {
         do {
             System.out.println(AppMessages.MENU.get());
             System.out.print("> ");
-            userCommand = scanner.next();
+            userCommand = scanner.nextLine().trim();
             commandRunner
                     .getOrDefault(userCommand, () -> System.out.println(AppMessages.INVALID_INPUT.get()))
                     .run();
@@ -38,7 +36,7 @@ public class ConsoleApp {
         System.out.println(AppMessages.FAREWELL.get());
 
         scanner.close();
-        pool.shutdown();
+        factory.close();
     }
 
     public static Map<String, Runnable> init(GameController gameController) {
@@ -53,7 +51,7 @@ public class ConsoleApp {
                 entry("8", gameController.filterByPrice()),
                 entry("9", gameController.filterByRating()),
                 entry("10", gameController.sortedByAdding()),
-                entry("exit", () -> System.exit(0))
+                entry("exit", () -> {})
         );
     }
 }

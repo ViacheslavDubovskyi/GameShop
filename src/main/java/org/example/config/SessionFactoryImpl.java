@@ -9,7 +9,7 @@ public class SessionFactoryImpl {
     public static SessionFactory getSessionFactory() {
         Configuration configuration = new Configuration();
 
-        configuration.setProperty("hibernate.connection.Driverclass", "org.postgresql.Driver");
+        configuration.setProperty("hibernate.connection.driver_class", "org.postgresql.Driver");
         configuration.setProperty("hibernate.connection.url", "jdbc:postgresql://localhost:5432/gameshop");
         configuration.setProperty("hibernate.connection.username", "postgres");
         configuration.setProperty("hibernate.connection.password", "postgres");
