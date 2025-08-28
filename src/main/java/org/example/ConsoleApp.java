@@ -29,7 +29,7 @@ public class ConsoleApp {
         do {
             System.out.println(AppMessages.MENU.get());
             System.out.print("> ");
-            userCommand = scanner.next();
+            userCommand = scanner.nextLine().trim();
             commandRunner
                     .getOrDefault(userCommand, () -> System.out.println(AppMessages.INVALID_INPUT.get()))
                     .run();
@@ -53,7 +53,7 @@ public class ConsoleApp {
                 entry("8", gameController.filterByPrice()),
                 entry("9", gameController.filterByRating()),
                 entry("10", gameController.sortedByAdding()),
-                entry("exit", () -> System.exit(0))
+                entry("exit", () -> {})
         );
     }
 }
