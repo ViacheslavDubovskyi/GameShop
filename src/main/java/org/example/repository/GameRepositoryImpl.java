@@ -36,7 +36,7 @@ public class GameRepositoryImpl implements GameRepository {
         try (Session session = sessionFactory.openSession()) {
             Transaction transaction = session.beginTransaction();
 
-            int rows = session.createQuery(HQLQueries.UPDATE.get())
+            int rows = session.createQuery(HQLQueries.UPDATE.get(), Game.class)
                     .setParameter("title", game.getTitle())
                     .setParameter("genre", game.getGenre())
                     .setParameter("price", game.getPrice())
@@ -56,7 +56,7 @@ public class GameRepositoryImpl implements GameRepository {
     public int remove(int id) {
         try (Session session = sessionFactory.openSession()) {
             Transaction transaction = session.beginTransaction();
-            int rows = session.createQuery(HQLQueries.REMOVE_BY_ID.get())
+            int rows = session.createQuery(HQLQueries.REMOVE_BY_ID.get(), Game.class)
                     .setParameter("id", id)
                     .executeUpdate();
             transaction.commit();
@@ -67,58 +67,52 @@ public class GameRepositoryImpl implements GameRepository {
     @Override
     public List<Game> findByTitle(String title) {
         try (Session session = sessionFactory.openSession()) {
-            List<Game> games = session.createQuery(HQLQueries.FIND_BY_TITLE.get(), Game.class)
+            return session.createQuery(HQLQueries.FIND_BY_TITLE.get(), Game.class)
                     .setParameter("title", "%" + title + "%")
                     .getResultList();
-            return games;
         }
     }
 
     @Override
     public List<Game> filterByPrice(double max) {
         try (Session session = sessionFactory.openSession()) {
-            List<Game> games = session.createQuery(HQLQueries.FILTER_BY_PRICE.get(), Game.class)
+            return session.createQuery(HQLQueries.FILTER_BY_PRICE.get(), Game.class)
                     .setParameter("price", max)
                     .getResultList();
-            return games;
         }
     }
 
     @Override
     public List<Game> filterByGenre(String genre) {
         try (Session session = sessionFactory.openSession()) {
-            List<Game> games = session.createQuery(HQLQueries.FIND_BY_GENRE.get(), Game.class)
+            return session.createQuery(HQLQueries.FIND_BY_GENRE.get(), Game.class)
                     .setParameter("genre", genre)
                     .getResultList();
-            return games;
         }
     }
 
     @Override
     public List<Game> filterByRating(double rating) {
         try (Session session = sessionFactory.openSession()) {
-            List<Game> games = session.createQuery(HQLQueries.FILTER_BY_RATING.get(), Game.class)
+            return session.createQuery(HQLQueries.FILTER_BY_RATING.get(), Game.class)
                     .setParameter("rating", rating)
                     .getResultList();
-            return games;
         }
     }
 
     @Override
     public List<Game> sortedByAddedDate() {
         try (Session session = sessionFactory.openSession()) {
-            List<Game> games = session.createQuery(HQLQueries.SORTED_BY_DATE.get(), Game.class)
+            return session.createQuery(HQLQueries.SORTED_BY_DATE.get(), Game.class)
                     .getResultList();
-            return games;
         }
     }
 
     @Override
     public List<Game> findAll() {
         try (Session session = sessionFactory.openSession()) {
-            List<Game> games = session.createQuery(HQLQueries.FIND_ALL.get(), Game.class)
+            return session.createQuery(HQLQueries.FIND_ALL.get(), Game.class)
                     .getResultList();
-            return games;
         }
     }
 }
