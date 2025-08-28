@@ -1,6 +1,6 @@
 🎮 **GameShop**
 
-A console-based application developed to simplify game catalog management for small websites. 
+A console-based application to simplify game catalog management for small websites. 
 Implemented PostgreSQL persistence using Hibernate ORM. In a separate branch, integrated JDBC with HikariCP as an alternative solution.
 
 📌 **Features**
