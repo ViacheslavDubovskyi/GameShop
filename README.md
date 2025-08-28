@@ -10,7 +10,7 @@ Implemented PostgreSQL persistence using Hibernate ORM, and integrated JDBC and 
 + PostgreSQL persistence with Hibernate / JDBC (in the jdbc branch);
 + HikariCP for connection pooling (in the jdbc branch).
 
-🔄 **Hibernate Branch (hibernate)**
+🔄 **Hibernate Branch**
 
 In this branch, the project has been refactored to use Hibernate ORM for persistence:
 
