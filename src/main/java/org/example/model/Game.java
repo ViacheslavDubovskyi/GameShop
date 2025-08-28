@@ -35,9 +35,9 @@ public class Game {
     @Column(name = "description")
     private String description;
 
-    @Column(name = "releaseDate", nullable = false)
+    @Column(name = "release_date", nullable = false)
     private LocalDate releaseDate;
 
-    @Column(name = "addedDate", nullable = false)
+    @Column(name = "added_date", nullable = false)
     private LocalDate addedDate;
 }
