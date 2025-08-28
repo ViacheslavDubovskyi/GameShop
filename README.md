@@ -11,7 +11,7 @@ Implemented PostgreSQL persistence using Hibernate ORM. In a separate branch, in
 + HikariCP for connection pooling (jdbc branch).
 
 🔄 **Hibernate**
-- Implemented persistence using Hibernate Session and EntityManager;
+- Implemented persistence using Hibernate Session;
 - Mapped the Game entity using annotations (@Entity, @Table, @Id, etc.);
 - Implemented repository layer using Hibernate queries (HQL);
 - Maintained existing business logic and console interface;
