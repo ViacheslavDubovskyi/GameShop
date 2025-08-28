@@ -38,7 +38,7 @@ public class GameController {
             while (true) {
                 try {
                     System.out.println(GameCard.ID.get());
-                    String userId = scanner.next();
+                    String userId = scanner.nextLine().trim();
                     if (userExit(userId)) return;
 
                     int id = GameValidator.parsePositiveInt((userId));
@@ -61,7 +61,7 @@ public class GameController {
     public Runnable deleteGame() {
         return () -> {
             System.out.println(GameCard.ID.get());
-            String userId = scanner.next();
+            String userId = scanner.nextLine().trim();
             int id = GameValidator.parsePositiveInt((userId));
             int status = gameService.deleteById(id);
 
@@ -76,7 +76,7 @@ public class GameController {
     public Runnable getByTitle() {
         return () -> {
             System.out.println(GameCard.TITLE.get());
-            String userTitle = scanner.next();
+            String userTitle = scanner.nextLine().trim();
             String title = GameValidator.parseNonEmpty(userTitle);
             List<Game> games = gameService.findByTitle(title);
 
@@ -88,7 +88,7 @@ public class GameController {
     public Runnable getById() {
         return () -> {
             System.out.println(GameCard.ID.get());
-            String userId = scanner.next();
+            String userId = scanner.nextLine().trim();
             int id = GameValidator.parsePositiveInt((userId));
             Game game = gameService.findById(id);
 
@@ -108,7 +108,7 @@ public class GameController {
     public Runnable filterByGenre() {
         return () -> {
             System.out.println(GameCard.GENRE.get());
-            String userGenre = scanner.next();
+            String userGenre = scanner.nextLine().trim();
             String genre = GameValidator.parseNonEmpty(userGenre);
             List<Game> games = gameService.filterByGenre(genre);
 
@@ -120,7 +120,7 @@ public class GameController {
     public Runnable filterByPrice() {
         return () -> {
             System.out.println(GameCard.PRICE.get());
-            String userPrice = scanner.next();
+            String userPrice = scanner.nextLine().trim();
             double price = GameValidator.parsePositiveDouble(userPrice);
             List<Game> games = gameService.filterByPrice(price);
 
@@ -132,7 +132,7 @@ public class GameController {
     public Runnable filterByRating() {
         return () -> {
             System.out.println(GameCard.RATING.get());
-            String userRating = scanner.next();
+            String userRating = scanner.nextLine().trim();
             double rating = GameValidator.parsePositiveDouble(userRating);
             List<Game> games = gameService.filterByRating(rating);
 
