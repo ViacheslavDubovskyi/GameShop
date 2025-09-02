@@ -32,7 +32,7 @@ The Gameshop project follows a layered Repository-Service-Controller architectur
 + Database: PostgreSQL
 + Database Access: Hibernate ORM / JDBC with HikariCP (connection pooling)
 + Build Tool: Maven
-+ Testing: JUnit, Mockito (manual mocks)
++ Testing: JUnit, in-memory mock repository
 
 ⚙️ **Build & Run**
 
