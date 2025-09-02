@@ -19,7 +19,7 @@ public class GameServiceTest {
     private GameService gameService;
 
     @BeforeEach
-    void setUp() {
+    public void setUp() {
         gameRepository = new GameRepositoryMock();
         gameService = new GameService(gameRepository);
         gameRepository.clear();
