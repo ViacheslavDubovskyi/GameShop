@@ -16,15 +16,18 @@ public class GameService {
     }
 
     public Game save(Game game) {
+        if (game == null) {
+            throw new IllegalArgumentException("Game cannot be null");
+        }
         Game savedGame = gameRepository.save(game);
         return Optional.ofNullable(savedGame)
-                .orElseThrow(() -> new IllegalStateException(AppMessages.SAVED_ERROR.get() + game.getTitle()));
+                .orElseThrow(() -> new IllegalArgumentException(AppMessages.SAVED_ERROR.get() + game.getTitle()));
     }
 
     public Game findById(int id) {
         Game game = gameRepository.getById(id);
         return Optional.ofNullable(game)
-                .orElseThrow(() -> new IllegalStateException(AppMessages.FOUND_BY_ID_ERROR.get() + id));
+                .orElseThrow(() -> new IllegalArgumentException(AppMessages.FOUND_BY_ID_ERROR.get() + id));
     }
 
     public List<Game> findByTitle(String title) {
