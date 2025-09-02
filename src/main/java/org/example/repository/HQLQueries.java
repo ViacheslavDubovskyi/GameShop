@@ -5,7 +5,7 @@ public enum HQLQueries {
     UPDATE("UPDATE Game g SET g.title = :title, g.genre = :genre, g.price = :price, " +
             "g.rating = :rating, g.description = :description, g.releaseDate = :releaseDate, " +
             "g.addedDate = :addedDate WHERE g.id = :id"),
-    FIND_BY_TITLE("FROM Game g WHERE g.title LIKE :title"),
+    FIND_BY_TITLE("FROM Game g WHERE lower(g.title) LIKE :title"),
     FIND_ALL("FROM Game"),
     FIND_BY_GENRE("FROM Game g WHERE g.genre = :genre"),
     FILTER_BY_PRICE("FROM Game g WHERE g.price > :price"),

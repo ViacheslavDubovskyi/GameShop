@@ -4,6 +4,7 @@ import org.example.AppMessages;
 import org.example.model.Game;
 import org.example.service.GameService;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Scanner;
 
@@ -22,6 +23,8 @@ public class GameController {
             try {
                 Game.GameBuilder builder = Game.builder();
                 fillGameFields(builder, null);
+
+                builder.addedDate(LocalDate.now());
                 Game newGame = builder.build();
                 Game saved = gameService.save(newGame);
 
@@ -152,6 +155,7 @@ public class GameController {
     private void fillGameFields(Game.GameBuilder gameBuilder, Game existing) {
         boolean isUpdate = existing != null;
         for (GameCard field : GameCard.values()) {
+            if (field == GameCard.ID || field == GameCard.ADDED_DATE) continue;
             while (true) {
                 try {
                     String currentValue = isUpdate ? getCurrentFieldValue(existing, field) : null;
@@ -175,6 +179,7 @@ public class GameController {
                         case DESCRIPTION -> gameBuilder.description(userInput);
                         case RELEASE_DATE -> gameBuilder.releaseDate(GameValidator.parseDate(userInput));
                     }
+                    break;
                 } catch (Exception e) {
                     System.out.println(AppMessages.INVALID_INPUT.get() + e.getMessage());
                 }

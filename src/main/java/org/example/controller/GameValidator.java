@@ -7,13 +7,13 @@ public class GameValidator {
 
     public static double parsePositiveDouble(String input) throws IllegalArgumentException {
         double value = Double.parseDouble(input);
-        if (value < 0 || value > 10) throw new IllegalArgumentException("Value must be between 0 and 10.");
+        if (value < 0) throw new IllegalArgumentException("Value must be positive integer");
         return value;
     }
 
     public static int parsePositiveInt(String input) throws IllegalArgumentException {
         int value = Integer.parseInt(input);
-        if (value < 0) throw new IllegalArgumentException("Value must be positive integer.");
+        if (value < 0 || value > 10) throw new IllegalArgumentException("Value must be between 0 and 10.");
         return value;
     }
 
