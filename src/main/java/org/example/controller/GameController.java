@@ -158,15 +158,11 @@ public class GameController {
             if (field == GameCard.ID || field == GameCard.ADDED_DATE) continue;
             while (true) {
                 try {
-                    String currentValue = isUpdate ? getCurrentFieldValue(existing, field) : null;
-                    System.out.println(field.get() + (currentValue != null ? " [current: " + currentValue + "]" : "") + ":");
                     String userInput = scanner.nextLine().trim();
-
                     if (userExit(userInput)) return;
                     if (isUpdate && userInput.isEmpty()) {
                         break;
                     }
-
                     switch (field) {
                         case TITLE -> gameBuilder.title(GameValidator.parseNonEmpty(userInput));
                         case GENRE -> gameBuilder.genre(GameValidator.parseNonEmpty(userInput));
@@ -185,20 +181,6 @@ public class GameController {
                 }
             }
         }
-    }
-
-    private String getCurrentFieldValue(Game game, GameCard field) {
-        if (game == null) return null;
-        return switch (field) {
-            case ID -> String.valueOf(game.getId());
-            case TITLE -> game.getTitle();
-            case GENRE -> game.getGenre();
-            case PRICE -> String.valueOf(game.getPrice());
-            case RATING -> String.valueOf(game.getRating());
-            case DESCRIPTION -> game.getDescription();
-            case RELEASE_DATE -> game.getReleaseDate() != null ? game.getReleaseDate().toString() : null;
-            case ADDED_DATE -> game.getAddedDate() != null ? game.getAddedDate().toString() : null;
-        };
     }
 
     private Game.GameBuilder getBuilder(Game existing) {
